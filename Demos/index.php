@@ -3,7 +3,6 @@
 header("Content-type: text/plain");
 
 require_once('../Source/poker_texas.php');
-require_once('../Source/french.php');
 /*
 ?>
 <!DOCTYPE html>
