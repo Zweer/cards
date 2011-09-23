@@ -20,7 +20,7 @@ $poker = new Poker_Texas();
 $poker->giveCards();
 $poker->evaluate();
 $poker->printResult();
-die($poker);
+echo "\n" . $poker;
 
 /*
 ?>
