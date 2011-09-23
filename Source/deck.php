@@ -42,6 +42,21 @@ class Deck
         shuffle($this->_cards);
     }
 
+    public function giveCard()
+    {
+        $Card = $this->_cards[$this->_pointer++];
+        return $Card;
+    }
+
+    public function giveCards($Number = 1)
+    {
+        $Ret = array();
+        for($i = 0; $i < $Number; ++$i)
+            $Ret[] = $this->giveCard();
+
+        return $Ret;
+    }
+
     public function __toString()
     {
         $S = 'This is a deck of ' . $this->_cardType . " cards:\n\n";

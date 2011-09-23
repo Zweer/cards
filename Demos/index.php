@@ -2,7 +2,7 @@
 
 header("Content-type: text/plain");
 
-require_once('../Source/deck.php');
+require_once('../Source/poker_texas.php');
 require_once('../Source/french.php');
 /*
 ?>
@@ -15,8 +15,13 @@ require_once('../Source/french.php');
 
 <?php
 */
-$deck = new Deck(true);
-echo $deck;
+
+$poker = new Poker_Texas();
+$poker->giveCards();
+$poker->evaluate();
+$poker->printResult();
+die($poker);
+
 /*
 ?>
 

@@ -16,13 +16,29 @@ abstract class Card
     public static $names = array('suits' => array(),
                                  'ranks' => array());
 
-    public function __construct($Value)
+    public function __construct($Value, $Suit = null)
     {
-        $Value = $Value % static::CARD_NUMBER;
+        if(isset($Suit))
+            $this->__constructFromRankAndSuit($Value, $Suit);
+        else
+            $this->__constructFromValue($Value);
+    }
+
+    protected function __constructFromRankAndSuit($Rank, $Suit)
+    {
         $CardsPerSuit = static::CARD_NUMBER / 4;
 
-        $this->_value = $Value;
-        $this->_suit = (int) $this->_value / $CardsPerSuit;
+        $this->_suit = $Suit % 4;
+        $this->_rank = $Rank % $CardsPerSuit;
+        $this->_value = ($this->_suit * $CardsPerSuit) + $this->_rank;
+    }
+
+    protected function __constructFromValue($Value)
+    {
+        $CardsPerSuit = static::CARD_NUMBER / 4;
+
+        $this->_value = $Value % static::CARD_NUMBER;
+        $this->_suit = intval($this->_value / $CardsPerSuit);
         $this->_rank = $this->_value % $CardsPerSuit;
     }
 
@@ -67,9 +83,10 @@ abstract class Card
             case 'Suit':
                 $this->_suit = $value;
             break;
-        }
 
-        trigger_error("'$name' is not part of the data.", E_USER_ERROR);
-        return false;
+            default:
+               trigger_error("'$name' is not part of the data.", E_USER_ERROR);
+            break;
+        }
     }
 }
