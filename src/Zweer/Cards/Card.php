@@ -82,6 +82,9 @@ abstract class Card
         $this->Value = ($this->_suit * $cardsPerSuit) + $this->_rank;
     }
 
+    /**
+     * @param int $value
+     */
     protected function _constructFromValue($value)
     {
         $cardsPerSuit = static::CARD_NUMBER / 4;
@@ -91,16 +94,27 @@ abstract class Card
         $this->Rank = $this->_value % $cardsPerSuit;
     }
 
+    /**
+     * @return bool
+     */
     public function isJolly()
     {
         return $this->_rank == (static::CARD_NUMBER / 4);
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return static::$names['ranks'][$this->_rank] . ' of ' . static::$names['suits'][$this->_suit] . ' (' . $this->_value . ')';
     }
 
+    /**
+     * @param string $name
+     * @return int
+     * @throws \InvalidArgumentException
+     */
     public function __get($name)
     {
         switch ($name) {
@@ -121,6 +135,11 @@ abstract class Card
         }
     }
 
+    /**
+     * @param string $name
+     * @param int    $value
+     * @throws \InvalidArgumentException
+     */
     public function __set($name, $value)
     {
         switch ($name) {
