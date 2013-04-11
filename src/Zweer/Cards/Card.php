@@ -54,44 +54,22 @@ abstract class Card
 
     /**
      * @param int $value
-     * @param int $suit
-     */
-    public function __construct($value, $suit = null)
-    {
-        if (isset($suit)) {
-            $this->_constructFromRankAndSuit($value, $suit);
-        } else {
-            $this->_constructFromValue($value);
-        }
-    }
-
-    /**
      * @param int $rank
      * @param int $suit
      */
-    protected function _constructFromRankAndSuit($rank, $suit)
+    public function __construct($value = null, $rank = null, $suit = null)
     {
-        $cardsPerSuit = static::CARD_NUMBER / 4;
-
-        $this->Rank = $rank;
-        $this->Suit = $suit;
-
-        if ($this->_rank == (static::CARD_NUMBER / 4)) {
-            $this->_suit = intval($this->_suit / 2);
+        if (!is_null($value)) {
+            $this->Value = $value;
         }
-        $this->Value = ($this->_suit * $cardsPerSuit) + $this->_rank;
-    }
 
-    /**
-     * @param int $value
-     */
-    protected function _constructFromValue($value)
-    {
-        $cardsPerSuit = static::CARD_NUMBER / 4;
+        if (!is_null($rank)) {
+            $this->Rank = $rank;
+        }
 
-        $this->Value = $value;
-        $this->Suit = intval($this->_value / $cardsPerSuit);
-        $this->Rank = $this->_value % $cardsPerSuit;
+        if (!is_null($suit)) {
+            $this->Suit = $suit;
+        }
     }
 
     /**
@@ -171,5 +149,39 @@ abstract class Card
             default:
                 throw new \InvalidArgumentException('"' . $name . '" is not part of the data');
         }
+    }
+
+    /**
+     * @param int $value
+     * @return Card
+     */
+    public static function createFromValue($value)
+    {
+        $cardsPerSuit = static::CARD_NUMBER / 4;
+
+        $card = new static($value);
+        $card->Suit = intval($card->Value / $cardsPerSuit);
+        $card->Rank = $card->Value % $cardsPerSuit;
+
+        return $card;
+    }
+
+    /**
+     * @param int $rank
+     * @param int $suit
+     * @return Card
+     */
+    public static function createFromRankAndSuit($rank, $suit)
+    {
+        $cardsPerSuit = static::CARD_NUMBER / 4;
+
+        $card = new static(null, $rank, $suit);
+
+        if ($card->Rank == (static::CARD_NUMBER / 4)) {
+            $card->Suit = intval($card->Suit / 2);
+        }
+        $card->Value = ($card->Suit * $cardsPerSuit) + $card->Rank;
+
+        return $card;
     }
 }
