@@ -6,13 +6,46 @@ use Zweer\Cards\Card;
 
 class Deck implements \Iterator
 {
+    /**
+     * @var Card[]
+     */
     protected $_cards = array();
+    /**
+     * @var int
+     */
     protected $_position = 0;
 
+    /**
+     * @return Deck
+     */
     public function shuffle()
     {
         shuffle($this->_cards);
         $this->rewind();
+
+        return $this;
+    }
+
+    /**
+     * @return Card
+     */
+    public function giveCard()
+    {
+        return $this->_cards[$this->_position++];
+    }
+
+    /**
+     * @param int $howMany
+     * @return Card[]
+     */
+    public function giveCards($howMany = 1)
+    {
+        $ret = array();
+        for ($i = 0; $i < $howMany; ++$i) {
+            $ret[] = $this->giveCard();
+        }
+
+        return $ret;
     }
 
     public function rewind()
@@ -40,6 +73,11 @@ class Deck implements \Iterator
         return isset($this->_cards[$this->_position]);
     }
 
+    /**
+     * @param Card $card
+     * @param bool $shuffle
+     * @return Deck
+     */
     public static function create(Card $card, $shuffle = false)
     {
         $cardClass = get_class($card);
@@ -48,6 +86,26 @@ class Deck implements \Iterator
 
         for ($i = 0; $i < $cardNumber; ++$i) {
             $deck[] = $cardClass::createFromValue($i);
+        }
+
+        if ($shuffle) {
+            $deck->shuffle();
+        }
+
+        return $deck;
+    }
+
+    /**
+     * @param Card[] $cards
+     * @param bool $shuffle
+     * @return Deck
+     */
+    public static function createFromCards(array $cards, $shuffle = false)
+    {
+        $deck = new static();
+
+        foreach($cards as $card) {
+            $deck[] = $card;
         }
 
         if ($shuffle) {
