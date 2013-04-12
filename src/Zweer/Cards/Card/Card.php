@@ -1,6 +1,6 @@
 <?php
 
-namespace Zweer\Cards;
+namespace Zweer\Cards\Card;
 
 /**
  * Class Card
@@ -56,7 +56,8 @@ abstract class Card
     /**
      * @param int $value
      * @param int $rank
-     * @param int $suit
+     * @param null $suit
+     * @return Card
      */
     public function __construct($value = null, $rank = null, $suit = null)
     {

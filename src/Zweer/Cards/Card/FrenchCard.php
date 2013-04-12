@@ -1,6 +1,6 @@
 <?php
 
-namespace Zweer\Cards;
+namespace Zweer\Cards\Card;
 
 class FrenchCard extends Card
 {

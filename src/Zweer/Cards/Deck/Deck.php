@@ -2,7 +2,7 @@
 
 namespace Zweer\Cards\Deck;
 
-use Zweer\Cards\Card;
+use Zweer\Cards\Card\Card;
 
 class Deck implements \Iterator
 {
@@ -98,6 +98,7 @@ class Deck implements \Iterator
     /**
      * @param Card[] $cards
      * @param bool $shuffle
+     * @throws \InvalidArgumentException
      * @return Deck
      */
     public static function createFromCards(array $cards, $shuffle = false)
@@ -105,6 +106,9 @@ class Deck implements \Iterator
         $deck = new static();
 
         foreach($cards as $card) {
+            if (!$card instanceof Card) {
+                throw new \InvalidArgumentException('The cards provided aren\'t instances of Card: ' . var_dump($card));
+            }
             $deck[] = $card;
         }
 
