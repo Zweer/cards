@@ -82,14 +82,6 @@ abstract class Card
     }
 
     /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return static::$names['ranks'][$this->_rank] . ' of ' . static::$names['suits'][$this->_suit] . ' (' . $this->_value . ')';
-    }
-
-    /**
      * @param string $name
      * @return int
      * @throws \InvalidArgumentException
