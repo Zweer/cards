@@ -9,8 +9,6 @@ namespace Zweer\Cards;
  * @property int Value
  * @property int Rank
  * @property int Suit
- *
- * TODO: jolly
  */
 abstract class Card
 {
