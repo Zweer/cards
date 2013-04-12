@@ -6,9 +6,9 @@ namespace Zweer\Cards;
  * Class Card
  * @package Zweer\Cards
  *
- * @property int Value
- * @property int Rank
- * @property int Suit
+ * @property int value
+ * @property int rank
+ * @property int suit
  */
 abstract class Card
 {
@@ -25,6 +25,9 @@ abstract class Card
      */
     const CARD_NUMBER = 0;
 
+    /**
+     * Is the jolly allowed?
+     */
     const HAS_JOLLY = false;
 
     /**
@@ -58,15 +61,15 @@ abstract class Card
     public function __construct($value = null, $rank = null, $suit = null)
     {
         if (!is_null($value)) {
-            $this->Value = $value;
+            $this->value = $value;
         }
 
         if (!is_null($rank)) {
-            $this->Rank = $rank;
+            $this->rank = $rank;
         }
 
         if (!is_null($suit)) {
-            $this->Suit = $suit;
+            $this->suit = $suit;
         }
     }
 
@@ -94,15 +97,15 @@ abstract class Card
     public function __get($name)
     {
         switch ($name) {
-            case 'Value':
+            case 'value':
                 return $this->_value;
                 break;
 
-            case 'Rank':
+            case 'rank':
                 return $this->_rank;
                 break;
 
-            case 'Suit':
+            case 'suit':
                 return $this->_suit;
                 break;
 
@@ -119,7 +122,7 @@ abstract class Card
     public function __set($name, $value)
     {
         switch ($name) {
-            case 'Value':
+            case 'value':
                 $value = intval($value);
                 if ($value > (static::CARD_NUMBER + 1) or (!static::HAS_JOLLY and $value < (static::CARD_NUMBER + 1))) {
                     throw new \InvalidArgumentException('The value provided for "value" is too high: ' . $value . ' when the max is ' . (static::HAS_JOLLY ? (static::CARD_NUMBER + 1) : (static::CARD_NUMBER - 1)));
@@ -127,7 +130,7 @@ abstract class Card
                 $this->_value = $value;
                 break;
 
-            case 'Rank':
+            case 'rank':
                 $value = intval($value);
                 $cardsPerSuit = static::CARD_NUMBER / 4;
                 if ($value > $cardsPerSuit or (!static::HAS_JOLLY and $value == $cardsPerSuit)) {
@@ -136,7 +139,7 @@ abstract class Card
                 $this->_rank = $value;
                 break;
 
-            case 'Suit':
+            case 'suit':
                 $value = intval($value);
                 if ($value >= 4) {
                     throw new \InvalidArgumentException('The value provided for "suit" is too high: ' . $value . ' when the max is 3');
@@ -158,8 +161,8 @@ abstract class Card
         $cardsPerSuit = static::CARD_NUMBER / 4;
 
         $card = new static($value);
-        $card->Suit = intval($card->Value / $cardsPerSuit);
-        $card->Rank = $card->Value % $cardsPerSuit;
+        $card->suit = intval($card->value / $cardsPerSuit);
+        $card->rank = $card->value % $cardsPerSuit;
 
         return $card;
     }
@@ -175,10 +178,10 @@ abstract class Card
 
         $card = new static(null, $rank, $suit);
 
-        if ($card->Rank == (static::CARD_NUMBER / 4)) {
-            $card->Suit = intval($card->Suit / 2);
+        if ($card->rank == (static::CARD_NUMBER / 4)) {
+            $card->suit = intval($card->suit / 2);
         }
-        $card->Value = ($card->Suit * $cardsPerSuit) + $card->Rank;
+        $card->value = ($card->suit * $cardsPerSuit) + $card->rank;
 
         return $card;
     }
